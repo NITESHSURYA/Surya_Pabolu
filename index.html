@@ -1,10 +1,716 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Surya Pabolu's Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surya Pabolu — Senior Quality Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1D9E75;
+    --teal-light: #E1F5EE;
+    --teal-mid: #5DCAA5;
+    --teal-dark: #0F6E56;
+    --teal-deep: #085041;
+    --ink: #111210;
+    --ink-2: #3a3a38;
+    --ink-3: #6b6b68;
+    --ink-4: #9a9a96;
+    --surface: #f9f8f5;
+    --surface-2: #f2f1ec;
+    --border: #e2e0d8;
+    --white: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NOISE TEXTURE overlay ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 980px; margin: 0 auto; padding: 0 2rem; }
+
+  /* ── HEADER / NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(249, 248, 245, 0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0.875rem 0;
+  }
+  nav .inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .nav-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 13px;
+    color: var(--ink-3);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 6rem 0 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-circle {
+    position: absolute;
+    top: -120px; right: -160px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(29,158,117,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--teal);
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+  .hero-desc {
+    font-size: 16px;
+    color: var(--ink-3);
+    max-width: 560px;
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+  .hero-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+  .contact-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    color: var(--ink-2);
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .contact-pill:hover { border-color: var(--teal-mid); color: var(--teal-dark); }
+  .contact-pill svg { color: var(--teal); flex-shrink: 0; }
+
+  .awards-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .award {
+    font-size: 12px;
+    background: var(--teal-light);
+    color: var(--teal-dark);
+    border: 1px solid #9FE1CB;
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  /* ── METRICS STRIP ── */
+  .metrics-strip {
+    background: var(--ink);
+    padding: 3rem 0;
+    overflow: hidden;
+  }
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0;
+  }
+  .metric-item {
+    padding: 1rem 1.5rem;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    animation: fadeUp 0.6s ease both;
+  }
+  .metric-item:last-child { border-right: none; }
+  .metric-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: var(--teal-mid);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .metric-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── SECTION COMMON ── */
+  section { padding: 5rem 0; }
+  section + section { border-top: 1px solid var(--border); }
+
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    font-weight: 500;
+    margin-bottom: 2.5rem;
+  }
+  .section-tag::before {
+    content: '';
+    display: block;
+    width: 18px; height: 1px;
+    background: var(--ink-4);
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    margin-bottom: 2.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── SKILLS ── */
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  @media(max-width: 640px) { .skills-layout { grid-template-columns: 1fr; } }
+
+  .skill-group { margin-bottom: 2rem; }
+  .skill-group-name {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag {
+    font-size: 13px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--ink-2);
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+  }
+  .tag:hover { border-color: var(--teal-mid); }
+  .tag.core {
+    background: var(--teal-light);
+    border-color: #9FE1CB;
+    color: var(--teal-deep);
+    font-weight: 500;
+  }
+
+  /* ── SKILL BARS ── */
+  .bars { display: flex; flex-direction: column; gap: 18px; }
+  .bar-row label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--ink-2);
+    margin-bottom: 8px;
+  }
+  .bar-row label span:last-child { color: var(--ink-4); }
+  .bar-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--teal-mid), var(--teal));
+    width: 0;
+    transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* ── EXPERIENCE ── */
+  .exp-timeline { display: flex; flex-direction: column; gap: 2rem; }
+  .exp-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .exp-card:hover {
+    border-color: var(--teal-mid);
+    box-shadow: 0 4px 24px rgba(29,158,117,0.07);
+  }
+  .exp-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--teal);
+  }
+  .exp-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .exp-role {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--ink);
+  }
+  .exp-badge {
+    font-size: 12px;
+    background: var(--surface-2);
+    color: var(--ink-3);
+    padding: 4px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .exp-company {
+    font-size: 13px;
+    color: var(--teal);
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.02em;
+  }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .exp-bullets li {
+    font-size: 14px;
+    color: var(--ink-3);
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.65;
+  }
+  .exp-bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 9px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal-mid);
+    flex-shrink: 0;
+  }
+
+  .exp-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .hl-chip {
+    font-size: 12px;
+    background: var(--teal-light);
+    color: var(--teal-deep);
+    border: 1px solid #9FE1CB;
+    padding: 4px 11px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+
+  /* ── EDUCATION ── */
+  .edu-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    transition: border-color 0.25s;
+  }
+  .edu-card:hover { border-color: var(--teal-mid); }
+  .edu-deg {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+  .edu-inst { font-size: 13px; color: var(--ink-3); }
+  .edu-year {
+    font-size: 13px;
+    color: var(--ink-3);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 5px 16px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.45);
+    font-size: 13px;
+    padding: 2rem 0;
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+  footer strong { color: var(--teal-mid); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── MOBILE ── */
+  @media(max-width: 600px) {
+    .hero { padding: 4rem 0 3rem; }
+    .nav-links { display: none; }
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .metric-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  }
+</style>
 </head>
 <body>
-    <h1>Welcome to My Portfolio</h1>
-    <p>This is a brief introduction about me.</p>
+
+<!-- NAV -->
+<nav>
+  <div class="inner">
+    <a class="nav-brand" href="#">Surya Pabolu</a>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg-circle"></div>
+  <div class="container">
+    <div class="hero-eyebrow">Senior Quality Engineer</div>
+    <h1>Building quality<br>into every<br><em>release.</em></h1>
+    <p class="hero-desc">3.9+ years driving innovation in QA automation and AI-powered testing. Pioneered Chaos Testing strategies that reduced production defects by 20% and improved system stability by 50%.</p>
+    <div class="hero-contacts">
+      <a href="mailto:Niteshpabolu9537@gmail.com" class="contact-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8l10 6 10-6"/></svg>
+        Niteshpabolu9537@gmail.com
+      </a>
+      <a href="tel:+917661072010" class="contact-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.58 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.86-1.86a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2.02z"/></svg>
+        +91 7661072010
+      </a>
+      <a href="https://linkedin.com/in/surya-pabolu-b144ab185" target="_blank" class="contact-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <span class="contact-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        Hyderabad, India
+      </span>
+    </div>
+    <div class="awards-row">
+      <span class="award">★ Shooting Star Award</span>
+      <span class="award">★ Super Crew Award</span>
+      <span class="award">★ Hi-Five Award</span>
+    </div>
+  </div>
+</div>
+
+<!-- METRICS -->
+<div class="metrics-strip">
+  <div class="container">
+    <div class="metrics-grid">
+      <div class="metric-item fade-up"><div class="metric-num">3.9+</div><div class="metric-label">Years experience</div></div>
+      <div class="metric-item fade-up" style="animation-delay:0.05s"><div class="metric-num">98%</div><div class="metric-label">Test suite stability</div></div>
+      <div class="metric-item fade-up" style="animation-delay:0.1s"><div class="metric-num">95%</div><div class="metric-label">Requirement coverage</div></div>
+      <div class="metric-item fade-up" style="animation-delay:0.15s"><div class="metric-num">50%</div><div class="metric-label">System resilience gain</div></div>
+      <div class="metric-item fade-up" style="animation-delay:0.2s"><div class="metric-num">45%</div><div class="metric-label">Faster test execution</div></div>
+      <div class="metric-item fade-up" style="animation-delay:0.25s"><div class="metric-num">60%</div><div class="metric-label">Less UI defect leakage</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-tag">Skills</div>
+    <div class="skills-layout">
+      <div>
+        <div class="skill-group fade-up">
+          <div class="skill-group-name">Testing</div>
+          <div class="tags">
+            <span class="tag core">Functional</span>
+            <span class="tag core">Regression</span>
+            <span class="tag">Integration</span>
+            <span class="tag">UAT</span>
+            <span class="tag">End-to-End</span>
+          </div>
+        </div>
+        <div class="skill-group fade-up">
+          <div class="skill-group-name">Automation</div>
+          <div class="tags">
+            <span class="tag core">Playwright</span>
+            <span class="tag core">Selenium (Java, C#)</span>
+            <span class="tag core">GitHub Copilot</span>
+            <span class="tag">TestRigor</span>
+          </div>
+        </div>
+        <div class="skill-group fade-up">
+          <div class="skill-group-name">Frameworks</div>
+          <div class="tags">
+            <span class="tag core">BDD</span>
+            <span class="tag core">Cucumber</span>
+            <span class="tag">TestNG</span>
+            <span class="tag">NUnit</span>
+            <span class="tag">JUnit</span>
+          </div>
+        </div>
+        <div class="skill-group fade-up">
+          <div class="skill-group-name">API & Database</div>
+          <div class="tags">
+            <span class="tag core">Postman</span>
+            <span class="tag">SQL</span>
+            <span class="tag">NoSQL</span>
+          </div>
+        </div>
+        <div class="skill-group fade-up">
+          <div class="skill-group-name">Monitoring</div>
+          <div class="tags">
+            <span class="tag core">Splunk</span>
+            <span class="tag">AppDynamics</span>
+            <span class="tag">DataDog</span>
+          </div>
+        </div>
+        <div class="skill-group fade-up">
+          <div class="skill-group-name">CI/CD</div>
+          <div class="tags">
+            <span class="tag">Azure DevOps</span>
+            <span class="tag">Jenkins</span>
+            <span class="tag">GitHub Actions</span>
+          </div>
+        </div>
+        <div class="skill-group fade-up">
+          <div class="skill-group-name">Methodology</div>
+          <div class="tags">
+            <span class="tag core">Agile / Scrum</span>
+            <span class="tag">Shift-Left Testing</span>
+            <span class="tag">Chaos Testing</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="skill-group-name" style="margin-bottom:18px">Core proficiency</div>
+        <div class="bars" id="skillBars">
+          <div class="bar-row fade-up">
+            <label><span>Playwright / Selenium</span><span>95%</span></label>
+            <div class="bar-track"><div class="bar-fill" data-w="95"></div></div>
+          </div>
+          <div class="bar-row fade-up">
+            <label><span>BDD / Cucumber</span><span>90%</span></label>
+            <div class="bar-track"><div class="bar-fill" data-w="90"></div></div>
+          </div>
+          <div class="bar-row fade-up">
+            <label><span>AI-driven QA</span><span>85%</span></label>
+            <div class="bar-track"><div class="bar-fill" data-w="85"></div></div>
+          </div>
+          <div class="bar-row fade-up">
+            <label><span>API testing — Postman</span><span>88%</span></label>
+            <div class="bar-track"><div class="bar-fill" data-w="88"></div></div>
+          </div>
+          <div class="bar-row fade-up">
+            <label><span>Monitoring stack</span><span>82%</span></label>
+            <div class="bar-track"><div class="bar-fill" data-w="82"></div></div>
+          </div>
+          <div class="bar-row fade-up">
+            <label><span>CI/CD pipelines</span><span>80%</span></label>
+            <div class="bar-track"><div class="bar-fill" data-w="80"></div></div>
+          </div>
+          <div class="bar-row fade-up">
+            <label><span>SQL & data validation</span><span>78%</span></label>
+            <div class="bar-track"><div class="bar-fill" data-w="78"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-tag">Experience</div>
+    <div class="exp-timeline">
+
+      <div class="exp-card fade-up">
+        <div class="exp-top">
+          <div class="exp-role">Senior Quality Engineer</div>
+          <span class="exp-badge">May 2024 – Present</span>
+        </div>
+        <div class="exp-company">LTIMindtree · C1Plus Project · Hyderabad</div>
+        <ul class="exp-bullets">
+          <li>Architected Playwright automation frameworks achieving 98% test suite stability across cross-browser environments and a 45% increase in execution speed.</li>
+          <li>Pioneered Chaos Testing and Error Budget Monitoring using Splunk, AppDynamics, and DataDog — reducing production vulnerabilities by 20% and improving overall system resilience by 50%.</li>
+          <li>Championed Shift-Left Testing practices, identifying defects 3× earlier in the SDLC and improving product quality scores by 30%.</li>
+          <li>Managed QA and UAT environments end-to-end, contributing to zero critical production failures across 10+ major releases.</li>
+          <li>Leveraged TestRigor's visual testing capabilities to reduce cosmetic defect leakage to production by 60%.</li>
+          <li>Built peer group analysis dashboards improving reporting accuracy by 40% for data-driven stakeholder decisions.</li>
+        </ul>
+        <div class="exp-highlights">
+          <span class="hl-chip">Playwright</span>
+          <span class="hl-chip">Chaos Testing</span>
+          <span class="hl-chip">Shift-Left</span>
+          <span class="hl-chip">Splunk</span>
+          <span class="hl-chip">TestRigor</span>
+          <span class="hl-chip">Error Budget Monitoring</span>
+        </div>
+      </div>
+
+      <div class="exp-card fade-up">
+        <div class="exp-top">
+          <div class="exp-role">Quality Engineer</div>
+          <span class="exp-badge">May 2022 – Apr 2024</span>
+        </div>
+        <div class="exp-company">LTIMindtree · Hcue Project · Hyderabad</div>
+        <ul class="exp-bullets">
+          <li>Led end-to-end QA with 200+ detailed test scenarios across functional, regression, integration, and UAT phases — achieving 95% requirement coverage.</li>
+          <li>Designed Selenium C# automation frameworks with BDD/Cucumber, reducing manual testing effort by 40% with reusable, maintainable test suites.</li>
+          <li>Validated 50+ backend integrations via Postman, cutting integration defects by 35% and ensuring data integrity across distributed systems.</li>
+          <li>Leveraged GitHub Copilot for AI-assisted test creation, cutting test creation time by 30% and minimising requirements validation errors.</li>
+          <li>Applied SQL queries to validate data consistency, resolving 90% of data-related defects before UAT.</li>
+          <li>Improved average defect resolution time by 25% through cross-functional triage and root cause analysis.</li>
+        </ul>
+        <div class="exp-highlights">
+          <span class="hl-chip">Selenium C#</span>
+          <span class="hl-chip">BDD / Cucumber</span>
+          <span class="hl-chip">Postman</span>
+          <span class="hl-chip">GitHub Copilot</span>
+          <span class="hl-chip">SQL</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="section-tag">Education</div>
+    <div class="edu-card fade-up">
+      <div>
+        <div class="edu-deg">B.Tech in Aeronautical Engineering</div>
+        <div class="edu-inst">Bharath Institute of Higher Education and Research, Chennai</div>
+      </div>
+      <div class="edu-year">Graduated March 2021</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Surya Pabolu</strong> &nbsp;·&nbsp; Senior Quality Engineer &nbsp;·&nbsp; Hyderabad, India
+</footer>
+
+<script>
+  // Intersection observer for fade-up animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Skill bars — animate when section scrolls into view
+  let barsAnimated = false;
+  const barsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !barsAnimated) {
+        barsAnimated = true;
+        setTimeout(() => {
+          document.querySelectorAll('.bar-fill').forEach(bar => {
+            bar.style.width = bar.dataset.w + '%';
+          });
+        }, 300);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const barsSection = document.getElementById('skillBars');
+  if (barsSection) barsObserver.observe(barsSection);
+</script>
 </body>
 </html>
